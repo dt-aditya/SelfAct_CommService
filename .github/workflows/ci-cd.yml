@@ -1,0 +1,49 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: 
+      - main  # Run on push to main branch
+  pull_request:
+    branches:
+      - main  # Run on PRs to main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # services:
+    #   db:
+    #     image: postgres:latest  # Use your preferred DB image
+    #     env:
+    #       POSTGRES_USER: testuser
+    #       POSTGRES_PASSWORD: testpass
+    #       POSTGRES_DB: testdb
+    #     ports:
+    #       - 5432:5432
+    #     options: >-
+    #       --health-cmd "pg_isready -U testuser" 
+    #       --health-interval 10s 
+    #       --health-timeout 5s 
+    #       --health-retries 5
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # - name: Set environment variables
+    #   run: echo "DATABASE_URL=postgresql://testuser:testpass@localhost:5432/testdb" >> $GITHUB_ENV
+
+    - name: Run tests
+      run: |
+        pytest tests/
