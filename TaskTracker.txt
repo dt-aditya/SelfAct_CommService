@@ -1,0 +1,11 @@
+- Docker
+    - Modify docker-compose to handle passwords properly.
+
+- App
+    - Add tests to the App
+
+- Overall
+    - Create queueService
+        - The behaviour should be such that the request should push a message on the respective queue and create a db entry.
+            The user should be later send a confirmation email/sms once a worker processed the message and db entry status should be updated.
+
