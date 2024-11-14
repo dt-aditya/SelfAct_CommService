@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . /app
 
 # Install dependencies
-RUN pip install --no-cache-dir fastapi uvicorn sqlalchemy psycopg2-binary
+RUN pip install --no-cache-dir fastapi uvicorn sqlalchemy psycopg2-binary celery redis
 
 # Command to run the FastAPI application with Uvicorn
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

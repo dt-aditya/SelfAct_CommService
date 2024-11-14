@@ -11,8 +11,14 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
+      celery:
+        condition: service_started
     environment:
       - DATABASE_URL=postgresql://user:drowssap@db:5432/test_db
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
 
   db:
     image: postgres:13
@@ -31,6 +37,30 @@ services:
       timeout: 5s
       retries: 5
 
-# Define the named volume at the bottom of the file
+  redis:
+    image: redis:6
+    container_name: redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: celery_worker
+    depends_on:
+      - db
+      - redis
+    command: celery -A celery_app.celery_app worker --loglevel=info
+    environment:
+      - DATABASE_URL=postgresql://user:drowssap@db:5432/test_db
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+
 volumes:
   postgres_data:
