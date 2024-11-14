@@ -6,16 +6,12 @@ from sqlalchemy.orm import sessionmaker
 from app.db.database import Base
 from app.models.message_models import Message
 from fastapi.testclient import TestClient
-from app.main import app  # assuming 'app' is in 'app.main'
+from app.main import app
 
-# Set the DATABASE_URL to an in-memory SQLite database for testing
-DATABASE_URL = "sqlite:///./test.db"  # Change this to "sqlite:///:memory:" for a purely in-memory database
 
-# Create a test-specific database engine and session
+DATABASE_URL = "sqlite:///./test.db"
 engine = create_engine(DATABASE_URL)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-# Create the database tables
 Base.metadata.create_all(bind=engine)
 
 # Override the dependency
