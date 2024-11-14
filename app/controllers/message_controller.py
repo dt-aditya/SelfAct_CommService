@@ -12,7 +12,7 @@ from app.db.database import get_db
 router = APIRouter()
 
 
-@router.post("/api/v1/sendMessage", response_model=MessageResponse)
+@router.post("/api/v1/sendMessage", response_model=dict)
 def send_message(message: MessageRequest, db: Session = Depends(get_db)):
     try:
         response = message_service.send_message(db=db, message=message)
@@ -27,8 +27,9 @@ def send_message(message: MessageRequest, db: Session = Depends(get_db)):
 @router.post("/api/v2/sendMessage", response_model=dict)
 def queue_message(message: MessageRequest):
     try:
-        task = message_service.send_message_task(message)
-        return {"task_id": task.id, "status": "Message queued successfully"}
+        task = message_service.send_message_task.delay(message.model_dump())
+        return {"status": "Message queued"}
+        # return {"task_id": task.id, "status": "Message queued successfully"}
     except HTTPException as e:
         raise e
     except Exception as e:

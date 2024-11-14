@@ -1,6 +1,6 @@
 from enum import Enum
 
-class MessageType(Enum):
+class MessageType(str, Enum):
     """
     All supported types of messages should be listed here.
     """

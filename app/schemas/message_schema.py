@@ -8,6 +8,9 @@ class MessageRequest(BaseModel):
     source: str
     recipient: str
     content: str
+
+    class Config:
+        use_enum_values = True
     
 
 class MessageResponse(BaseModel):
