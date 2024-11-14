@@ -23,7 +23,6 @@ def get_message_sender(message_type: MessageType) -> MessageSender:
 
 
 def send_message(db: Session, message: MessageRequest) -> MessageResponse:
-    
     sender = get_message_sender(message.message_type)
     status = sender.send(message.source, message.recipient, message.content)
 
