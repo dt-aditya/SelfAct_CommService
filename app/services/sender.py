@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 
 
-
 class MessageSender(ABC):
     # TODO: Could add broadcast function here which takes list of reciepients.
     
