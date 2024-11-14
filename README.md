@@ -25,3 +25,8 @@ The Backend requirements are straight forward and REST endpoints are exposed.
 There is another flag called `USE_LOG_BUFFER` which is set to true in code. When set to true, the log messages to be written to DB are batched in Redis and flushed to the DB every minute. (Can extend this functionality by accepting the CRON). This is being done using Celery and Celery Beat.
 
 There are tests in the test folder which can be run by using the command `pytest tests`
+
+To run the app, you should have docker installed. Just run the following next:
+```
+docker-compose up --build
+```
